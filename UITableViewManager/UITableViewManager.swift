@@ -29,12 +29,14 @@ public class UITableViewManager: NSObject {
         self.tableView = tableView
     }
     
-    func section(at index: Int, visible: Bool) -> UITableViewSection? {
+    /// Return section at index if exist
+    public func section(at index: Int, visible: Bool) -> UITableViewSection? {
         let sections = visible ? self.visibleSections : self.sections
         return sections.indices.contains(index) ? sections[index] : nil
     }
     
-    func row(at indexPath: IndexPath, visible: Bool) -> UITableViewRow? {
+    /// Return row at index path if exist
+    public func row(at indexPath: IndexPath, visible: Bool) -> UITableViewRow? {
         guard let section = self.section(at: indexPath.section, visible: visible) else {
             return nil
         }
@@ -42,8 +44,6 @@ public class UITableViewManager: NSObject {
         let rows = visible ? section.visibleRows : section.rows
         return rows.indices.contains(indexPath.row) ? rows[indexPath.row] : nil
     }
-    
-//    convertToIncludeAllIndexPath(withToRenderIndexPath indexPath: IndexPath) -> IndexPath? {
     
     /// Returns an index of the section if exist
     public func index(for section: UITableViewSection, visible: Bool) -> Int? {
@@ -64,26 +64,17 @@ public class UITableViewManager: NSObject {
         
     }
     
-    //    /// If exist, return the Row that correspond the selected cell
-    //    open func selectedRow() -> Row? {
-    //        guard let indexPath = tableView.indexPathForSelectedRow else {
-    //            return nil
-    //        }
-    //
-    //        return row(atIndexPath: indexPath)
-    //    }
+    /// The selected row identifying the index path.
+    public var selectedRow: UITableViewRow? {
+        guard let indexPath = self.tableView?.indexPathForSelectedRow else { return nil }
+        return self.row(at: indexPath, visible: true)
+    }
     
-    
-    //    /// If exist, return the Rows that are appearing to the user in the table
-    //    open func visibleRows() -> [Row]? {
-    //        guard let indexPaths = tableView.indexPathsForVisibleRows else {
-    //            return nil
-    //        }
-    //
-    //        return indexPaths.map {
-    //            row(atIndexPath: $0)
-    //        }
-    //    }
+    /// The selected rows identifying the index paths.
+    public var selectedRows: [UITableViewRow]? {
+        guard let indexPath = self.tableView?.indexPathsForSelectedRows else { return nil }
+        return indexPath.compactMap { self.row(at: $0, visible: true) }
+    }
     
     /// Add a new section with UITableViewSection in the table view.
     public func addSection(_ section: UITableViewSection) {
@@ -113,6 +104,7 @@ public class UITableViewManager: NSObject {
         
     }
 
+    /// Delete row of the table view if exist.
     public func deleteRow(_ row: UITableViewRow) {
         guard
             let indexPath = self.indexPath(for: row, visible: false),
@@ -120,14 +112,15 @@ public class UITableViewManager: NSObject {
         else { return }
         self.sections[indexPath.section].rows.remove(at: indexPath.row)
         self.tableView?.deleteRows(at: [indexPath], with: .automatic)
-//            delegate?.tableManagerDidDelete(row, atIndexPath: indexPath)
     }
     
+    /// Delete row at indexp path of the table view if exist.
     public func deleteRow(at indexPath: IndexPath, visible: Bool) {
         guard let row = self.row(at: indexPath, visible: visible) else { return }
         self.deleteRow(row)
     }
     
+    /// Reload table view data when you change UITableViewSection or UITableViewRow isVisible property
     public func reloadData() {
         self.tableView?.reloadData()
     }
@@ -161,25 +154,33 @@ extension UITableViewManager: UITableViewDataSource {
         
     }
     
-    //    public func tableView(_ tableView: UITableView, titleForHeaderInSection index: Int) -> String? {
-    //        let section = self.section(atIndex: index)
-    //
-    //        if let titleForHeader = section.titleForHeader {
-    //            return titleForHeader(section, tableView, index)
-    //        }
-    //
-    //        return nil
-    //    }
-    //
-    //    public func tableView(_ tableView: UITableView, titleForFooterInSection index: Int) -> String? {
-    //        let section = self.section(atIndex: index)
-    //
-    //        if let titleForFooter = section.titleForFooter {
-    //            return titleForFooter(section, tableView, index)
-    //        }
-    //
-    //        return nil
-    //    }
+    public func tableView(_ tableView: UITableView, titleForHeaderInSection index: Int) -> String? {
+        
+        guard let section = self.section(at: index, visible: true) else { return nil }
+        
+        if let titleForHeader = section.titleForHeader {
+            return titleForHeader
+        } else if let titleForHeaderHandler = section.titleForHeaderHandler {
+            return titleForHeaderHandler(tableView, index)
+        } else {
+            return nil
+        }
+
+    }
+    
+    public func tableView(_ tableView: UITableView, titleForFooterInSection index: Int) -> String? {
+        
+        guard let section = self.section(at: index, visible: true) else { return nil }
+        
+        if let titleForFooter = section.titleForFooter {
+            return titleForFooter
+        } else if let titleForFooterHandler = section.titleForFooterHandler {
+            return titleForFooterHandler(tableView, index)
+        } else {
+            return nil
+        }
+        
+    }
     
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let row = self.row(at: indexPath, visible: true)
@@ -211,61 +212,61 @@ extension UITableViewManager: UITableViewDelegate {
         row?.didSelectHandler?(tableView, indexPath)
     }
     
-    //    public func tableView(_ tableView: UITableView, heightForHeaderInSection index: Int) -> CGFloat {
-    //        let section = self.section(atIndex: index)
-    //
-    //        if let heightForHeader = section.heightForHeader {
-    //            return CGFloat(heightForHeader(section, tableView, index))
-    //        }
-    //
-    //        return CGFloat(0.0)
-    //    }
-    //
-    //    public func tableView(_ tableView: UITableView, viewForHeaderInSection index: Int) -> UIView? {
-    //        let section = self.section(atIndex: index)
-    //
-    //        if let viewForHeader = section.viewForHeader {
-    //            return viewForHeader(section, tableView, index)
-    //        }
-    //
-    //        return nil
-    //    }
-    //
-    //    public func tableView(_ tableView: UITableView, heightForFooterInSection index: Int) -> CGFloat {
-    //        let section = self.section(atIndex: index)
-    //
-    //        if let heightForFooter = section.heightForFooter {
-    //            return CGFloat(heightForFooter(section, tableView, index))
-    //        }
-    //
-    //        return CGFloat(0.0)
-    //    }
-    //
-    //    public func tableView(_ tableView: UITableView, viewForFooterInSection index: Int) -> UIView? {
-    //        let section = self.section(atIndex: index)
-    //
-    //        if let viewForFooter = section.viewForFooter {
-    //            return viewForFooter(section, tableView, index)
-    //        }
-    //
-    //        return nil
-    //    }
-    //
-    //    public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-    //        return sections.flatMap { $0.indexTitle }
-    //    }
-    //
-    //    public func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-    //        guard let section = (sections.filter { $0.indexTitle == title }.first) else {
-    //            return 0
-    //        }
-    //
-    //        guard let indexOfSection = sections.index(of: section) else {
-    //            return 0
-    //        }
-    //
-    //        return indexOfSection
-    //    }
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection index: Int) -> CGFloat {
+        
+        guard let section = self.section(at: index, visible: true) else { return 0 }
+        
+        if let heightForHeader = section.heightForHeader {
+            return heightForHeader
+        } else if let heightForHeaderHandler = section.heightForHeaderHandler {
+            return heightForHeaderHandler(tableView, index)
+        } else {
+            return UITableViewAutomaticDimension
+        }
+        
+    }
+    
+    public func tableView(_ tableView: UITableView,viewForHeaderInSection index:Int) -> UIView? {
+        guard let section = self.section(at: index, visible: true) else { return nil }
+        return section.viewForHeaderHandler?(tableView, index)
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForFooterInSection index: Int) -> CGFloat {
+        
+        guard let section = self.section(at: index, visible: true) else { return 0 }
+        
+        if let heightForFooter = section.heightForFooter {
+            return heightForFooter
+        } else if let heightForFooterHandler = section.heightForFooterHandler {
+            return heightForFooterHandler(tableView, index)
+        } else {
+            return UITableViewAutomaticDimension
+        }
+        
+    }
+    
+    public func tableView(_ tableView: UITableView,viewForFooterInSection index:Int) -> UIView? {
+        guard let section = self.section(at: index, visible: true) else { return nil }
+        return section.viewForFooterHandler?(tableView, index)
+    }
+    
+    public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return self.sections.compactMap { $0.indexTitle }
+    }
+    
+    public func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        
+        guard
+            let section = (self.sections.first { $0.indexTitle == title }),
+            let sectionIndex = sections.index(of: section)
+        else {
+            assertionFailure()
+            return 0
+        }
+
+        return sectionIndex
+        
+    }
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         

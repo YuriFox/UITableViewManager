@@ -12,7 +12,6 @@
 		DA155B5120FE5D0D00694C47 /* UITableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4D20FE5D0C00694C47 /* UITableViewManager.swift */; };
 		DA155B5220FE5D0D00694C47 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */; };
 		DA155B5320FE5D0D00694C47 /* UITableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */; };
-		DA155B5520FE5D1200694C47 /* SpaceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B5420FE5D1200694C47 /* SpaceRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +22,6 @@
 		DA155B4D20FE5D0C00694C47 /* UITableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewManager.swift; sourceTree = "<group>"; };
 		DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewSection.swift; sourceTree = "<group>"; };
-		DA155B5420FE5D1200694C47 /* SpaceRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpaceRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +59,6 @@
 				DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */,
 				DA155B4C20FE5D0C00694C47 /* UITableViewRow.swift */,
 				DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */,
-				DA155B5420FE5D1200694C47 /* SpaceRow.swift */,
 				DA155B4520FE5CD700694C47 /* Info.plist */,
 			);
 			path = UITableViewManager;
@@ -149,7 +146,6 @@
 				DA155B5120FE5D0D00694C47 /* UITableViewManager.swift in Sources */,
 				DA155B5020FE5D0D00694C47 /* UITableViewRow.swift in Sources */,
 				DA155B5320FE5D0D00694C47 /* UITableViewSection.swift in Sources */,
-				DA155B5520FE5D1200694C47 /* SpaceRow.swift in Sources */,
 				DA155B5220FE5D0D00694C47 /* UITableView+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

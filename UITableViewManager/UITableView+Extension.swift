@@ -14,13 +14,17 @@ public extension UITableView {
     
     /// UITableViewManager instance of this table view. A new one will be created if not exist.
     var manager: UITableViewManager {
-     
-        if let m = objc_getAssociatedObject(self, &InstanceKey) as? UITableViewManager {
-            return m
-        } else {
-            let manager = UITableViewManager(tableView: self)
-            objc_setAssociatedObject(self, &InstanceKey, manager, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return manager
+        set {
+            objc_setAssociatedObject(self, &InstanceKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        get {
+            if let m = objc_getAssociatedObject(self, &InstanceKey) as? UITableViewManager {
+                return m
+            } else {
+                let manager = UITableViewManager(tableView: self)
+                self.manager = manager
+                return manager
+            }
         }
         
     }

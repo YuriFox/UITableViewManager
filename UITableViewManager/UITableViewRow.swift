@@ -17,7 +17,7 @@ public class UITableViewRow: NSObject {
     public var height: CGFloat = 44
     
     /// Visible table view cell for this row.
-    public weak var cell: UITableViewCell?
+    public internal(set) weak var cell: UITableViewCell?
     
     /// Actions for this row
     public var actions: [UITableViewRowAction]?
