@@ -6,7 +6,9 @@
 //  Copyright © 2018 Yuri Lysytsia. All rights reserved.
 //
 
-import UIKit
+import class UIKit.UITableView
+
+// TODO: Fast way to show loading and info cell
 
 public class UITableViewManager: NSObject {
     
@@ -141,7 +143,7 @@ extension UITableViewManager: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let row = self.row(at: indexPath, visible: true) ?? UITableViewRow.default
+        let row = self.row(at: indexPath, visible: true) ?? UITableViewRow.default()
         return row.configurationHandler(tableView, indexPath)
         
     }

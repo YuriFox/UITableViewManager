@@ -6,7 +6,7 @@
 //  Copyright © 2018 Yuri Lysytsia. All rights reserved.
 //
 
-import UIKit
+import class UIKit.UITableView
 
 public class UITableViewRow: NSObject {
 
@@ -59,12 +59,27 @@ public class UITableViewRow: NSObject {
     
 }
 
+// MARK: - UITableViewRow Instance
 extension UITableViewRow {
     
-    public static var `default`: UITableViewRow {
+    public static func `default`(style: UITableViewCellStyle = .default) -> UITableViewRow {
         return UITableViewRow { (_, _) -> UITableViewCell in
-            return UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
+            return UITableViewCell(style: style, reuseIdentifier: "UITableViewCell")
         }
+    }
+    
+    public static func loading(style: UIActivityIndicatorViewStyle = .gray) -> UITableViewRow {
+        let row = UITableViewRow { (tableView, indexPath) -> UITableViewCell in
+            let cell = UILoadingTableViewCell(style: style)
+            cell.selectionStyle = .none
+            cell.backgroundColor = tableView.backgroundColor
+            cell.contentView.backgroundColor = tableView.backgroundColor
+            return cell
+        }
+        row.heightForRow { (tableView, _) -> CGFloat in
+            return tableView.frame.height + tableView.contentOffset.y - tableView.contentInset.top - tableView.contentInset.bottom
+        }
+        return row
     }
     
 }

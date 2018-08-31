@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA115F002102358E000847C8 /* UILoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA115EFD2102358E000847C8 /* UILoadingTableViewCell.swift */; };
 		DA155B4620FE5CD700694C47 /* UITableViewManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA155B4420FE5CD700694C47 /* UITableViewManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA155B5020FE5D0D00694C47 /* UITableViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4C20FE5D0C00694C47 /* UITableViewRow.swift */; };
 		DA155B5120FE5D0D00694C47 /* UITableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4D20FE5D0C00694C47 /* UITableViewManager.swift */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA115EFD2102358E000847C8 /* UILoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadingTableViewCell.swift; sourceTree = "<group>"; };
 		DA155B4120FE5CD700694C47 /* UITableViewManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UITableViewManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA155B4420FE5CD700694C47 /* UITableViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UITableViewManager.h; sourceTree = "<group>"; };
 		DA155B4520FE5CD700694C47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -35,6 +37,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA115EFB21023554000847C8 /* UITableViewLoadingCell */ = {
+			isa = PBXGroup;
+			children = (
+				DA115EFD2102358E000847C8 /* UILoadingTableViewCell.swift */,
+			);
+			path = UITableViewLoadingCell;
+			sourceTree = "<group>";
+		};
 		DA155B3720FE5CD700694C47 = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +68,7 @@
 				DA155B4D20FE5D0C00694C47 /* UITableViewManager.swift */,
 				DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */,
 				DA155B4C20FE5D0C00694C47 /* UITableViewRow.swift */,
+				DA115EFB21023554000847C8 /* UITableViewLoadingCell */,
 				DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */,
 				DA155B4520FE5CD700694C47 /* Info.plist */,
 			);
@@ -143,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA115F002102358E000847C8 /* UILoadingTableViewCell.swift in Sources */,
 				DA155B5120FE5D0D00694C47 /* UITableViewManager.swift in Sources */,
 				DA155B5020FE5D0D00694C47 /* UITableViewRow.swift in Sources */,
 				DA155B5320FE5D0D00694C47 /* UITableViewSection.swift in Sources */,
