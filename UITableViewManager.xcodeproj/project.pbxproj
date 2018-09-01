@@ -7,16 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DA115F002102358E000847C8 /* UILoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA115EFD2102358E000847C8 /* UILoadingTableViewCell.swift */; };
+		DA115F002102358E000847C8 /* UITableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA115EFD2102358E000847C8 /* UITableViewLoadingCell.swift */; };
 		DA155B4620FE5CD700694C47 /* UITableViewManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA155B4420FE5CD700694C47 /* UITableViewManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA155B5020FE5D0D00694C47 /* UITableViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4C20FE5D0C00694C47 /* UITableViewRow.swift */; };
 		DA155B5120FE5D0D00694C47 /* UITableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4D20FE5D0C00694C47 /* UITableViewManager.swift */; };
 		DA155B5220FE5D0D00694C47 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */; };
 		DA155B5320FE5D0D00694C47 /* UITableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */; };
+		DA3C392D213A575500D357A3 /* UITableViewInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C392C213A575500D357A3 /* UITableViewInfoCell.swift */; };
+		DA87181A21395E8F006E858A /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA87181921395E8F006E858A /* Array+Extension.swift */; };
+		DA87181D2139C1FB006E858A /* CHANGELOG in Resources */ = {isa = PBXBuildFile; fileRef = DA87181C2139C1FB006E858A /* CHANGELOG */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		DA115EFD2102358E000847C8 /* UILoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILoadingTableViewCell.swift; sourceTree = "<group>"; };
+		DA115EFD2102358E000847C8 /* UITableViewLoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewLoadingCell.swift; sourceTree = "<group>"; };
 		DA155B4120FE5CD700694C47 /* UITableViewManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UITableViewManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA155B4420FE5CD700694C47 /* UITableViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UITableViewManager.h; sourceTree = "<group>"; };
 		DA155B4520FE5CD700694C47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -24,6 +27,9 @@
 		DA155B4D20FE5D0C00694C47 /* UITableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewManager.swift; sourceTree = "<group>"; };
 		DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewSection.swift; sourceTree = "<group>"; };
+		DA3C392C213A575500D357A3 /* UITableViewInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewInfoCell.swift; sourceTree = "<group>"; };
+		DA87181921395E8F006E858A /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		DA87181C2139C1FB006E858A /* CHANGELOG */ = {isa = PBXFileReference; lastKnownFileType = text; path = CHANGELOG; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,14 +43,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DA115EFB21023554000847C8 /* UITableViewLoadingCell */ = {
-			isa = PBXGroup;
-			children = (
-				DA115EFD2102358E000847C8 /* UILoadingTableViewCell.swift */,
-			);
-			path = UITableViewLoadingCell;
-			sourceTree = "<group>";
-		};
 		DA155B3720FE5CD700694C47 = {
 			isa = PBXGroup;
 			children = (
@@ -64,12 +62,15 @@
 		DA155B4320FE5CD700694C47 /* UITableViewManager */ = {
 			isa = PBXGroup;
 			children = (
+				DA87181C2139C1FB006E858A /* CHANGELOG */,
 				DA155B4420FE5CD700694C47 /* UITableViewManager.h */,
 				DA155B4D20FE5D0C00694C47 /* UITableViewManager.swift */,
 				DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */,
 				DA155B4C20FE5D0C00694C47 /* UITableViewRow.swift */,
-				DA115EFB21023554000847C8 /* UITableViewLoadingCell */,
+				DA115EFD2102358E000847C8 /* UITableViewLoadingCell.swift */,
+				DA3C392C213A575500D357A3 /* UITableViewInfoCell.swift */,
 				DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */,
+				DA87181921395E8F006E858A /* Array+Extension.swift */,
 				DA155B4520FE5CD700694C47 /* Info.plist */,
 			);
 			path = UITableViewManager;
@@ -144,6 +145,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA87181D2139C1FB006E858A /* CHANGELOG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,10 +156,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA115F002102358E000847C8 /* UILoadingTableViewCell.swift in Sources */,
+				DA115F002102358E000847C8 /* UITableViewLoadingCell.swift in Sources */,
 				DA155B5120FE5D0D00694C47 /* UITableViewManager.swift in Sources */,
 				DA155B5020FE5D0D00694C47 /* UITableViewRow.swift in Sources */,
+				DA87181A21395E8F006E858A /* Array+Extension.swift in Sources */,
 				DA155B5320FE5D0D00694C47 /* UITableViewSection.swift in Sources */,
+				DA3C392D213A575500D357A3 /* UITableViewInfoCell.swift in Sources */,
 				DA155B5220FE5D0D00694C47 /* UITableView+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,7 +302,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = UITableViewManager/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -326,7 +330,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = UITableViewManager/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

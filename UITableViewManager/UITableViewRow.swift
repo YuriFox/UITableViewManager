@@ -10,9 +10,6 @@ import class UIKit.UITableView
 
 public class UITableViewRow: NSObject {
 
-    /// Determines whether this row is visible after the section is reloaded
-    public var isVisible: Bool
-
     /// Preferred height of this row
     public var height: CGFloat = 44
     
@@ -27,8 +24,7 @@ public class UITableViewRow: NSObject {
     private(set) var willDisplayHandler: WillDisplayHandler?
     private(set) var heightForRowHandler: HeightForRowHandler?
     
-    public init(visible: Bool = true, configurationHandler: @escaping ConfigurationHandler) {
-        self.isVisible = visible
+    public init(configurationHandler: @escaping ConfigurationHandler) {
         self.configurationHandler = configurationHandler
     }
 
@@ -62,16 +58,15 @@ public class UITableViewRow: NSObject {
 // MARK: - UITableViewRow Instance
 extension UITableViewRow {
     
-    public static func `default`(style: UITableViewCellStyle = .default) -> UITableViewRow {
+    public static var `default`: UITableViewRow {
         return UITableViewRow { (_, _) -> UITableViewCell in
-            return UITableViewCell(style: style, reuseIdentifier: "UITableViewCell")
+            return UITableViewCell(style: .default, reuseIdentifier: "UITableViewCell")
         }
     }
     
     public static func loading(style: UIActivityIndicatorViewStyle = .gray) -> UITableViewRow {
         let row = UITableViewRow { (tableView, indexPath) -> UITableViewCell in
-            let cell = UILoadingTableViewCell(style: style)
-            cell.selectionStyle = .none
+            let cell = UITableViewLoadingCell(style: style)
             cell.backgroundColor = tableView.backgroundColor
             cell.contentView.backgroundColor = tableView.backgroundColor
             return cell
@@ -82,4 +77,30 @@ extension UITableViewRow {
         return row
     }
     
+    public static func info(icon: UIImage?, title: String?, text: String?) -> UITableViewRow {
+        let row = UITableViewRow { (tableView, indexPath) -> UITableViewCell in
+            let cell = UITableViewInfoCell(icon: icon, title: title, text: text)
+            cell.backgroundColor = tableView.backgroundColor
+            cell.contentView.backgroundColor = tableView.backgroundColor
+            return cell
+        }
+        row.heightForRow { (tableView, _) -> CGFloat in
+            return tableView.frame.height + tableView.contentOffset.y - tableView.contentInset.top - tableView.contentInset.bottom
+        }
+        return row
+    }
+
+    public static func info(icon: UIImage?, attributedTitle: NSAttributedString?) -> UITableViewRow {
+        let row = UITableViewRow { (tableView, indexPath) -> UITableViewCell in
+            let cell = UITableViewInfoCell(icon: icon, attributedTitle: attributedTitle)
+            cell.backgroundColor = tableView.backgroundColor
+            cell.contentView.backgroundColor = tableView.backgroundColor
+            return cell
+        }
+        row.heightForRow { (tableView, _) -> CGFloat in
+            return tableView.frame.height + tableView.contentOffset.y - tableView.contentInset.top - tableView.contentInset.bottom
+        }
+        return row
+    }
+
 }

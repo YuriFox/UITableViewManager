@@ -1,0 +1,5 @@
+=== v1.1 ===
+- Add new function for UITableViewManager
+    - Insert, reload, delete section
+    - Insert, reload, delete rows in section
+- Add UITableViewRow loading and info cells

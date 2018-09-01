@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "UITableViewManager"
-  s.version      = "1.0"
+  s.version      = "1.1"
   s.summary      = "Better way to deal with UITableView"
 
   s.homepage     = "https://github.com/YuriFox/UITableViewManager"

@@ -1,5 +1,5 @@
 //
-//  UILoadingTableViewCell.swift
+//  UITableViewLoadingCell.swift
 //  UITableViewManager
 //
 //  Created by Yuri Fox on 23.05.2018.
@@ -8,7 +8,7 @@
 
 import class UIKit.UITableViewCell
 
-public class UILoadingTableViewCell: UITableViewCell {
+public class UITableViewLoadingCell: UITableViewCell {
   
     public private(set) var preferredActivityIndicatorViewStyle: UIActivityIndicatorViewStyle
     
@@ -22,17 +22,16 @@ public class UILoadingTableViewCell: UITableViewCell {
     
     public init(style: UIActivityIndicatorViewStyle) {
         self.preferredActivityIndicatorViewStyle = style
-        super.init(style: .default, reuseIdentifier: "\(UILoadingTableViewCell.self)")
+        super.init(style: .default, reuseIdentifier: "\(type(of: self).self)")
         self.initialize()
     }
     
     public required init?(coder aDecoder: NSCoder) {
-        self.preferredActivityIndicatorViewStyle = .gray
-        super.init(coder: aDecoder)
-        self.initialize()
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func initialize() {
+        self.selectionStyle = .none
         self.contentView.addSubview(self.activityIndicatorView)
         
         NSLayoutConstraint.activate([

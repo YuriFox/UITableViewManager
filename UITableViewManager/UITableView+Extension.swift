@@ -29,59 +29,6 @@ public extension UITableView {
         
     }
     
-    /// Sections of this table view
-    var sections: [UITableViewSection] {
-        set { self.manager.sections = newValue }
-        get { return self.manager.sections }
-    }
-    
-    /// Visible sections of this table view
-    var visibleSections: [UITableViewSection] {
-        return self.manager.visibleSections
-    }
-    
-    /// Return section at index if exist
-    func section(at index: Int, visible: Bool) -> UITableViewSection? {
-        return self.manager.section(at: index, visible: visible)
-    }
-    
-    /// Return row at index path if exist
-    func row(at indexPath: IndexPath, visible: Bool) -> UITableViewRow? {
-        return self.manager.row(at: indexPath, visible: visible)
-    }
-    
-    /// Return index for section if exist
-    func index(for section: UITableViewSection, visible: Bool) -> Int? {
-        return self.manager.index(for: section, visible: visible)
-    }
-    
-    /// Return index path for row if exist
-    func  indexPath(for row: UITableViewRow, visible: Bool) -> IndexPath? {
-        return self.manager.indexPath(for: row, visible: visible)
-    }
-    
-    /// Add a new section with UITableViewSection in the table view.
-    func addSection(_ section: UITableViewSection) {
-        self.manager.addSection(section)
-    }
-    
-    /// Add a new section in the table view.
-    public func addSection(visible: Bool) -> UITableViewSection{
-        return self.manager.addSection(visible: visible)
-    }
-    
-    /// Add a new row with UITableViewRow in the first section of the table view. A new section will be added if don't exist yet.
-    func addRow(_ row: UITableViewRow) {
-        self.manager.addRow(row)
-    }
-    
-    /// Add a new row in the first section of the table view. A new section will be added if don't exist yet.
-    public func addRow(visible: Bool = true, configurationHandler: @escaping UITableViewRow.ConfigurationHandler) -> UITableViewRow {
-        
-        return self.manager.addRow(visible: visible, configurationHandler: configurationHandler)
-        
-    }
-    
 }
 
 // MARK: - Reusable
@@ -99,45 +46,43 @@ public extension UITableView {
     
 }
 
-fileprivate var LoadingRowKey = "UITableViewLoadingRowKey"
+//fileprivate var LoadingRowKey = "UITableViewLoadingRowKey"
 
 // MARK: - Loading Cell
 public extension UITableView {
     
-    public private(set) var loadingRow: UITableViewRow {
-        set {
-            objc_setAssociatedObject(self, &LoadingRowKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        get {
-            if let row = objc_getAssociatedObject(self, &LoadingRowKey) as? UITableViewRow {
-                return row
-            } else {
-                return self.registerLoadingRow()
-            }
-        }
-    }
+//    public private(set) var loadingRow: UITableViewRow {
+//        set {
+//            objc_setAssociatedObject(self, &LoadingRowKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+//        }
+//        get {
+//            if let row = objc_getAssociatedObject(self, &LoadingRowKey) as? UITableViewRow {
+//                return row
+//            } else {
+//                return self.registerLoadingRow()
+//            }
+//        }
+//    }
     
-    private func registerLoadingRow() -> UITableViewRow {
-        let name = String(describing: UILoadingTableViewCell.self)
-        let nib = UINib(nibName: name, bundle: .main)
-        self.register(nib, forCellReuseIdentifier: name)
-        
-        let row = UITableViewRow.loading(style: .gray)
-        row.isVisible = false
-        self.loadingRow = row
-        self.addRow(row)
-        return row
-    }
-    
-    public func showLoadingRow() {
-        self.loadingRow.isVisible = true
-        self.sections.forEach { (section) in
-            section.rows.forEach { (row) in
-                row.isVisible = row == self.loadingRow
-            }
-        }
-        self.reloadData()
-    }
+//    private func registerLoadingRow() -> UITableViewRow {
+//        let name = String(describing: UILoadingTableViewCell.self)
+//        let nib = UINib(nibName: name, bundle: .main)
+//        self.register(nib, forCellReuseIdentifier: name)
+//
+//        let row = UITableViewRow.loading(style: .gray)
+//        self.loadingRow = row
+////        self.addRow(row)
+//        return row
+//    }
+//
+//    public func showLoadingRow() {
+//        self.sections.forEach { (section) in
+//            section.rows.forEach { (row) in
+////                row.isVisible = row == self.loadingRow
+//            }
+//        }
+//        self.reloadData()
+//    }
     
 }
 

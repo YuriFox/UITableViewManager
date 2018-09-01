@@ -8,7 +8,9 @@
 
 import class UIKit.UITableView
 
-// TODO: Fast way to show loading and info cell
+// TODO:
+// 1. UpdateSection(_ section: UITableViewSection, updateBlock: (UITableViewSection.Builder) -> Void)
+// 2. UITableViewSection.Builder has tableView, insert, delete, reload
 
 public class UITableViewManager: NSObject {
     
@@ -18,11 +20,6 @@ public class UITableViewManager: NSObject {
     /// Sections of table view
     public var sections: [UITableViewSection] = []
     
-    /// Visible sections of table view
-    public var visibleSections: [UITableViewSection] {
-        return self.sections.filter { $0.isVisible }
-    }
-    
     /// Initialize manager with the reference of table view
     public init(tableView: UITableView) {
         super.init()
@@ -31,35 +28,33 @@ public class UITableViewManager: NSObject {
         self.tableView = tableView
     }
     
+    /// Return true if section exist in table view
+    public func containsSection(_ section: UITableViewSection) -> Bool {
+        return self.sections.contains(section)
+    }
+    
     /// Return section at index if exist
-    public func section(at index: Int, visible: Bool) -> UITableViewSection? {
-        let sections = visible ? self.visibleSections : self.sections
-        return sections.indices.contains(index) ? sections[index] : nil
+    public func section(at index: Int) -> UITableViewSection? {
+        return self.sections.element(at: index)
     }
     
     /// Return row at index path if exist
-    public func row(at indexPath: IndexPath, visible: Bool) -> UITableViewRow? {
-        guard let section = self.section(at: indexPath.section, visible: visible) else {
-            return nil
-        }
-        
-        let rows = visible ? section.visibleRows : section.rows
-        return rows.indices.contains(indexPath.row) ? rows[indexPath.row] : nil
+    public func row(at indexPath: IndexPath) -> UITableViewRow? {
+        let section = self.section(at: indexPath.section)
+        return section?.rows.element(at: indexPath.row)
     }
     
     /// Returns an index of the section if exist
-    public func index(for section: UITableViewSection, visible: Bool) -> Int? {
-        let sections = visible ? self.visibleSections : self.sections
-        return sections.index(of: section)
+    public func index(for section: UITableViewSection) -> Int? {
+        return self.sections.index(of: section)
     }
     
     /// Returns an indexPath of the row if exist
-    public func indexPath(for row: UITableViewRow, visible: Bool) -> IndexPath? {
-        let sections = visible ? self.visibleSections : self.sections
+    public func indexPath(for row: UITableViewRow) -> IndexPath? {
         
-        for (sectionIndex, section) in sections.enumerated() {
-            guard let row = section.index(for: row, visible: visible) else { continue }
-            return IndexPath(row: row, section: sectionIndex)
+        for (sectionIndex, section) in self.sections.enumerated() {
+            guard let rowIndex = section.index(for: row) else { continue }
+            return IndexPath(row: rowIndex, section: sectionIndex)
         }
         
         return nil
@@ -69,61 +64,131 @@ public class UITableViewManager: NSObject {
     /// The selected row identifying the index path.
     public var selectedRow: UITableViewRow? {
         guard let indexPath = self.tableView?.indexPathForSelectedRow else { return nil }
-        return self.row(at: indexPath, visible: true)
+        return self.row(at: indexPath)
     }
     
     /// The selected rows identifying the index paths.
     public var selectedRows: [UITableViewRow]? {
         guard let indexPath = self.tableView?.indexPathsForSelectedRows else { return nil }
-        return indexPath.compactMap { self.row(at: $0, visible: true) }
+        return indexPath.compactMap { self.row(at: $0) }
     }
     
-    /// Add a new section with UITableViewSection in the table view.
-    public func addSection(_ section: UITableViewSection) {
+    /// Append a new section in the table view with animation.
+    public func appendSection(_ section: UITableViewSection, with animation: UITableViewRowAnimation) {
         self.sections.append(section)
+        self.updateData {
+            let index = self.index(for: section)!
+            let indexSet = IndexSet(integer: index)
+            self.tableView?.insertSections(indexSet, with: animation)
+        }
     }
     
-    /// Add a new section in the table view.
-    public func addSection(visible: Bool) -> UITableViewSection{
-        let section = UITableViewSection(visible: visible)
-        self.addSection(section)
-        return section
+    /// Insert a new section in the table view with animation.
+    public func insertSection(_ section: UITableViewSection, at index: Int, with animation: UITableViewRowAnimation) {
+        self.sections.insert(section, at: index)
+        self.updateData {
+            let indexSet = IndexSet(integer: index)
+            self.tableView?.insertSections(indexSet, with: animation)
+        }
     }
-    
-    /// Add a new row with UITableViewRow in the first section of the table view. A new section will be added if don't exist yet.
-    public func addRow(_ row: UITableViewRow) {
-        let section = self.section(at: 0, visible: false) ?? self.addSection(visible: true)
-        section.addRow(row)
-    }
-    
-    /// Add a new row in the first section of the table view. A new section will be added if don't exist yet.
-    @discardableResult
-    public func addRow(visible: Bool = true, configurationHandler: @escaping UITableViewRow.ConfigurationHandler) -> UITableViewRow {
 
-        let row = UITableViewRow(visible: visible, configurationHandler: configurationHandler)
-        self.addRow(row)
-        return row
+    /// Reload existing section in the table view with animation.
+    public func reloadSection(_ section: UITableViewSection, with animation: UITableViewRowAnimation) {
+        guard let index = self.index(for: section) else {
+            assertionFailure("Section not exist on this table view")
+            return
+        }
+        self.updateData {
+            let indexSet = IndexSet(integer: index)
+            self.tableView?.reloadSections(indexSet, with: animation)
+        }
+    }
+    
+    /// Delete existing section in the table view with animation.
+    public func deleteSection(_ section: UITableViewSection, with animation: UITableViewRowAnimation) {
+        guard let index = self.index(for: section) else {
+            assertionFailure("Section not exist on this table view")
+            return
+        }
+        self.sections.remove(at: index)
+        self.updateData {
+            let indexSet = IndexSet(integer: index)
+            self.tableView?.deleteSections(indexSet, with: animation)
+        }
+    }
+    
+    /// Append a new rows in the table view with animation. If the section doesn't exist it will be added to the end
+    public func appendRows(_ rows: [UITableViewRow], to section: UITableViewSection, with animation: UITableViewRowAnimation) {
+
+        rows.forEach { section.rows.append($0) }
+
+        guard self.containsSection(section) else {
+            self.appendSection(section, with: animation)
+            return
+        }
+
+        self.updateData {
+            let indexPaths = rows.compactMap { self.indexPath(for: $0) }
+            self.tableView?.insertRows(at: indexPaths, with: animation)
+        }
+
+    }
+
+    /// Insert a new rows in the table view with animation.
+    ///
+    /// - Parameters:
+    ///   - rows: Dictionary where Key is index, Value is Row
+    public func insertRows(_ rows: [Int : UITableViewRow], to section: UITableViewSection, with animation: UITableViewRowAnimation) {
+        
+        rows.forEach { section.rows.insert($0.value, at: $0.key) }
+        
+        guard self.containsSection(section) else {
+            assertionFailure("Section not exist on this table view")
+            return
+        }
+        
+        self.updateData {
+            let indexPaths = rows.compactMap { self.indexPath(for: $0.value) }
+            self.tableView?.insertRows(at: indexPaths, with: animation)
+        }
         
     }
-
-    /// Delete row of the table view if exist.
-    public func deleteRow(_ row: UITableViewRow) {
-        guard
-            let indexPath = self.indexPath(for: row, visible: false),
-            self.sections.indices.contains(indexPath.section)
-        else { return }
-        self.sections[indexPath.section].rows.remove(at: indexPath.row)
-        self.tableView?.deleteRows(at: [indexPath], with: .automatic)
+    
+    /// Insert a new rows in the table view with animation.
+    public func reloadRows(_ rows: [UITableViewRow], with animation: UITableViewRowAnimation) {
+        
+        self.updateData {
+            let indexPaths = rows.compactMap { self.indexPath(for: $0) }
+            self.tableView?.reloadRows(at: indexPaths, with: animation)
+        }
+        
     }
     
-    /// Delete row at indexp path of the table view if exist.
-    public func deleteRow(at indexPath: IndexPath, visible: Bool) {
-        guard let row = self.row(at: indexPath, visible: visible) else { return }
-        self.deleteRow(row)
+    /// Insert a new rows in the table view with animation.
+    public func deleteRows(_ rows: [UITableViewRow], with animation: UITableViewRowAnimation) {
+        
+        let indexPaths = rows.compactMap { self.indexPath(for: $0) }
+        indexPaths.forEach { self.section(at: $0.section)?.rows.remove(at: $0.row) }
+        
+        self.updateData {
+            self.tableView?.deleteRows(at: indexPaths, with: animation)
+        }
+        
     }
     
-    /// Reload table view data when you change UITableViewSection or UITableViewRow isVisible property
+    /// Update table view data with animation
+    ///
+    /// - Parameter updateHandler: Handler between beginUpdates and endUpdates
+    public func updateData(updateHandler: () -> Void) {
+        self.tableView?.beginUpdates()
+        updateHandler()
+        self.tableView?.endUpdates()
+    }
+    
+    /// Reload table view data when you change UITableViewSection or UITableViewRow
     public func reloadData() {
+        self.tableView?.dataSource = self
+        self.tableView?.delegate = self
         self.tableView?.reloadData()
     }
     
@@ -133,32 +198,30 @@ public class UITableViewManager: NSObject {
 extension UITableViewManager: UITableViewDataSource {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return self.visibleSections.count
+        return self.sections.count
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
-        guard let section = self.section(at: section, visible: true) else { return 0 }
-        return section.visibleRows.count
+        return self.section(at: section)?.rows.count ?? 0
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let row = self.row(at: indexPath, visible: true) ?? UITableViewRow.default()
+        let row = self.row(at: indexPath) ?? UITableViewRow.default
         return row.configurationHandler(tableView, indexPath)
         
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        guard let row = self.row(at: indexPath, visible: true) else { return 44 }
-        let height = row.heightForRowHandler?(tableView, indexPath)
-        return height ?? row.height
+        guard let row = self.row(at: indexPath) else { return 44 }
+        return row.heightForRowHandler?(tableView, indexPath) ?? row.height
         
     }
     
     public func tableView(_ tableView: UITableView, titleForHeaderInSection index: Int) -> String? {
         
-        guard let section = self.section(at: index, visible: true) else { return nil }
+        guard let section = self.section(at: index) else { return nil }
         
         if let titleForHeader = section.titleForHeader {
             return titleForHeader
@@ -172,7 +235,7 @@ extension UITableViewManager: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, titleForFooterInSection index: Int) -> String? {
         
-        guard let section = self.section(at: index, visible: true) else { return nil }
+        guard let section = self.section(at: index) else { return nil }
         
         if let titleForFooter = section.titleForFooter {
             return titleForFooter
@@ -185,13 +248,13 @@ extension UITableViewManager: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let row = self.row(at: indexPath, visible: true)
+        let row = self.row(at: indexPath)
         return row?.actions?.isEmpty == false
     }
     
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
      
-        guard let row = self.row(at: indexPath, visible: true) else { return nil }
+        guard let row = self.row(at: indexPath) else { return nil }
         return row.actions
         
     }
@@ -203,20 +266,20 @@ extension UITableViewManager: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let row = self.row(at: indexPath, visible: true)
+        let row = self.row(at: indexPath)
         row?.willDisplayHandler?(tableView, cell, indexPath)
         row?.cell = cell
         
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row = self.row(at: indexPath, visible: true)
+        let row = self.row(at: indexPath)
         row?.didSelectHandler?(tableView, indexPath)
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection index: Int) -> CGFloat {
         
-        guard let section = self.section(at: index, visible: true) else { return 0 }
+        guard let section = self.section(at: index) else { return 0 }
         
         if let heightForHeader = section.heightForHeader {
             return heightForHeader
@@ -229,13 +292,13 @@ extension UITableViewManager: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView,viewForHeaderInSection index:Int) -> UIView? {
-        guard let section = self.section(at: index, visible: true) else { return nil }
+        guard let section = self.section(at: index) else { return nil }
         return section.viewForHeaderHandler?(tableView, index)
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection index: Int) -> CGFloat {
         
-        guard let section = self.section(at: index, visible: true) else { return 0 }
+        guard let section = self.section(at: index) else { return 0 }
         
         if let heightForFooter = section.heightForFooter {
             return heightForFooter
@@ -248,7 +311,7 @@ extension UITableViewManager: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView,viewForFooterInSection index:Int) -> UIView? {
-        guard let section = self.section(at: index, visible: true) else { return nil }
+        guard let section = self.section(at: index) else { return nil }
         return section.viewForFooterHandler?(tableView, index)
     }
     
@@ -272,7 +335,7 @@ extension UITableViewManager: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let row = self.row(at: indexPath, visible: true)
+        let row = self.row(at: indexPath)
         row?.cell = nil
         
     }

@@ -9,17 +9,9 @@
 import class UIKit.UITableView
 
 public class UITableViewSection: NSObject {
-
-    /// Determines whether this section is visible after the table is reloaded
-    var isVisible: Bool
     
     /// Rows of section
-    public var rows: [UITableViewRow] = []
-
-    /// Visible rows of section
-    public var visibleRows: [UITableViewRow] {
-        return self.rows.filter { $0.isVisible }
-    }
+    public var rows: [UITableViewRow]
     
     /// Defines if it needs to be showed in vertical scrollbar.
     public var indexTitle: String?
@@ -43,39 +35,25 @@ public class UITableViewSection: NSObject {
     private(set) var viewForHeaderHandler: ViewForHeaderFooterHandler?
     private(set) var viewForFooterHandler: ViewForHeaderFooterHandler?
     
-    public init(visible: Bool = true) {
-        self.isVisible = visible
+    public init(rows: [UITableViewRow]) {
+        self.rows = rows
     }
-
+    
     /// Return true if row exist
     public func containsRow(_ row: UITableViewRow) -> Bool {
         return self.rows.contains(row)
     }
 
     /// Return index of the row if that exist
-    public func index(for row: UITableViewRow, visible: Bool) -> Int? {
-        let rows = visible ? self.rows : self.visibleRows
-        return rows.index(of: row)
+    public func index(for row: UITableViewRow) -> Int? {
+        return self.rows.index(of: row)
     }
     
     /// Return row at index
-    public func row(at index: Int, visible: Bool) -> UITableViewRow? {
-        let rows = visible ? self.visibleRows : self.rows
-        return rows.indices.contains(index) ? rows[index] : nil
+    public func row(at index: Int) -> UITableViewRow? {
+        return self.rows.element(at: index)
     }
     
-    /// Append new row with created UITableViewRow in this section.
-    public func addRow(_ row: UITableViewRow) {
-        self.rows.append(row)
-    }
-    
-    /// Append new row in this section.
-    public func addRow(visible: Bool = true, configuration: @escaping UITableViewRow.ConfigurationHandler) -> UITableViewRow {
-        let row = UITableViewRow(visible: visible, configurationHandler: configuration)
-        self.addRow(row)
-        return row
-    }
-
     /// Set the header title using a closure that will be called when the table view titleForHeaderAtIndex
     public func titleForHeader(handler: @escaping TitleForHeaderFooterHandler) {
         self.titleForHeaderHandler = handler
