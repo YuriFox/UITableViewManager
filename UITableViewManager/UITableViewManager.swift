@@ -8,10 +8,6 @@
 
 import class UIKit.UITableView
 
-// TODO:
-// 1. UpdateSection(_ section: UITableViewSection, updateBlock: (UITableViewSection.Builder) -> Void)
-// 2. UITableViewSection.Builder has tableView, insert, delete, reload
-
 public class UITableViewManager: NSObject {
     
     /// Reference of table view
@@ -19,7 +15,18 @@ public class UITableViewManager: NSObject {
     
     /// Sections of table view
     public var sections: [UITableViewSection] = []
-    
+        
+    /// Return first section or create new one
+    public var firstSection: UITableViewSection {
+        if let section = self.sections.first {
+            return section
+        } else {
+            let section = UITableViewSection(rows: [])
+            self.sections = [section]
+            return section
+        }
+    }
+        
     /// Initialize manager with the reference of table view
     public init(tableView: UITableView) {
         super.init()
@@ -36,6 +43,16 @@ public class UITableViewManager: NSObject {
     /// Return section at index if exist
     public func section(at index: Int) -> UITableViewSection? {
         return self.sections.element(at: index)
+    }
+    
+    /// Return first section with unique id
+    public func section(id: String) -> UITableViewSection? {
+        return self.sections(id: id).first
+    }
+    
+    /// Return sections with unique id
+    public func sections(id: String) -> [UITableViewSection] {
+        return self.sections.filter { $0.id == id }
     }
     
     /// Return row at index path if exist
@@ -74,7 +91,7 @@ public class UITableViewManager: NSObject {
     }
     
     /// Append a new section in the table view with animation.
-    public func appendSection(_ section: UITableViewSection, with animation: UITableViewRowAnimation) {
+    public func appendSection(_ section: UITableViewSection, with animation: UITableView.RowAnimation) {
         self.sections.append(section)
         self.updateData {
             let index = self.index(for: section)!
@@ -84,7 +101,7 @@ public class UITableViewManager: NSObject {
     }
     
     /// Insert a new section in the table view with animation.
-    public func insertSection(_ section: UITableViewSection, at index: Int, with animation: UITableViewRowAnimation) {
+    public func insertSection(_ section: UITableViewSection, at index: Int, with animation: UITableView.RowAnimation) {
         self.sections.insert(section, at: index)
         self.updateData {
             let indexSet = IndexSet(integer: index)
@@ -93,7 +110,7 @@ public class UITableViewManager: NSObject {
     }
 
     /// Reload existing section in the table view with animation.
-    public func reloadSection(_ section: UITableViewSection, with animation: UITableViewRowAnimation) {
+    public func reloadSection(_ section: UITableViewSection, with animation: UITableView.RowAnimation) {
         guard let index = self.index(for: section) else {
             assertionFailure("Section not exist on this table view")
             return
@@ -105,7 +122,7 @@ public class UITableViewManager: NSObject {
     }
     
     /// Delete existing section in the table view with animation.
-    public func deleteSection(_ section: UITableViewSection, with animation: UITableViewRowAnimation) {
+    public func deleteSection(_ section: UITableViewSection, with animation: UITableView.RowAnimation) {
         guard let index = self.index(for: section) else {
             assertionFailure("Section not exist on this table view")
             return
@@ -118,7 +135,7 @@ public class UITableViewManager: NSObject {
     }
     
     /// Append a new rows in the table view with animation. If the section doesn't exist it will be added to the end
-    public func appendRows(_ rows: [UITableViewRow], to section: UITableViewSection, with animation: UITableViewRowAnimation) {
+    public func appendRows(_ rows: [UITableViewRow], to section: UITableViewSection, with animation: UITableView.RowAnimation) {
 
         rows.forEach { section.rows.append($0) }
 
@@ -138,7 +155,7 @@ public class UITableViewManager: NSObject {
     ///
     /// - Parameters:
     ///   - rows: Dictionary where Key is index, Value is Row
-    public func insertRows(_ rows: [Int : UITableViewRow], to section: UITableViewSection, with animation: UITableViewRowAnimation) {
+    public func insertRows(_ rows: [Int : UITableViewRow], to section: UITableViewSection, with animation: UITableView.RowAnimation) {
         
         rows.forEach { section.rows.insert($0.value, at: $0.key) }
         
@@ -155,7 +172,7 @@ public class UITableViewManager: NSObject {
     }
     
     /// Insert a new rows in the table view with animation.
-    public func reloadRows(_ rows: [UITableViewRow], with animation: UITableViewRowAnimation) {
+    public func reloadRows(_ rows: [UITableViewRow], with animation: UITableView.RowAnimation) {
         
         self.updateData {
             let indexPaths = rows.compactMap { self.indexPath(for: $0) }
@@ -165,7 +182,7 @@ public class UITableViewManager: NSObject {
     }
     
     /// Insert a new rows in the table view with animation.
-    public func deleteRows(_ rows: [UITableViewRow], with animation: UITableViewRowAnimation) {
+    public func deleteRows(_ rows: [UITableViewRow], with animation: UITableView.RowAnimation) {
         
         let indexPaths = rows.compactMap { self.indexPath(for: $0) }
         indexPaths.forEach { self.section(at: $0.section)?.rows.remove(at: $0.row) }
@@ -286,7 +303,7 @@ extension UITableViewManager: UITableViewDelegate {
         } else if let heightForHeaderHandler = section.heightForHeaderHandler {
             return heightForHeaderHandler(tableView, index)
         } else {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
         
     }
@@ -305,7 +322,7 @@ extension UITableViewManager: UITableViewDelegate {
         } else if let heightForFooterHandler = section.heightForFooterHandler {
             return heightForFooterHandler(tableView, index)
         } else {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
         
     }

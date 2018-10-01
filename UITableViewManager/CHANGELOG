@@ -1,3 +1,8 @@
+=== v1.2 ===
+- Converted to Swift 4.2
+- Add unique id to UITableViewRow and UITableViewSection
+- Add method that get rows(sections) with unique id
+
 === v1.1 ===
 - Add new function for UITableViewManager
     - Insert, reload, delete section

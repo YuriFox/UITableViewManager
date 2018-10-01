@@ -15,12 +15,3 @@ FOUNDATION_EXPORT double UITableViewManagerVersionNumber;
 FOUNDATION_EXPORT const unsigned char UITableViewManagerVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <UITableViewManager/PublicHeader.h>
-
-
-// Remove add row/section
-// Add sections { set get } after need reload data
-// Add setSections(_:) -> Reload data
-// Add insertRows(in section) -> updates insert
-// Add deleteRows(in section) -> updates delete
-// Add reloadRows(in section) -> updates reload
-// Add moveRows(in section) -> updates move

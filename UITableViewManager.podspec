@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "UITableViewManager"
-  s.version      = "1.1"
+  s.version      = "1.2"
   s.summary      = "Better way to deal with UITableView"
 
   s.homepage     = "https://github.com/YuriFox/UITableViewManager"
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
 
   s.author       = { "YuriFox" => "yuri17fox@gmail.com" }
   
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "9.0"
 
   s.source       = { :git => "https://github.com/YuriFox/UITableViewManager.git", :tag => s.version.to_s }
 

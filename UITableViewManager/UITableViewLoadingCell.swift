@@ -10,17 +10,17 @@ import class UIKit.UITableViewCell
 
 public class UITableViewLoadingCell: UITableViewCell {
   
-    public private(set) var preferredActivityIndicatorViewStyle: UIActivityIndicatorViewStyle
+    public private(set) var preferredActivityIndicatorViewStyle: UIActivityIndicatorView.Style
     
     public lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: preferredActivityIndicatorViewStyle)
+        let indicator = UIActivityIndicatorView(style: preferredActivityIndicatorViewStyle)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
         indicator.startAnimating()
         return indicator
     }()
     
-    public init(style: UIActivityIndicatorViewStyle) {
+    public init(style: UIActivityIndicatorView.Style) {
         self.preferredActivityIndicatorViewStyle = style
         super.init(style: .default, reuseIdentifier: "\(type(of: self).self)")
         self.initialize()

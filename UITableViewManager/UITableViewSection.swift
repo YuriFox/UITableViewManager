@@ -10,6 +10,9 @@ import class UIKit.UITableView
 
 public class UITableViewSection: NSObject {
     
+    /// Unique section identificator
+    public var id: String?
+    
     /// Rows of section
     public var rows: [UITableViewRow]
     
@@ -52,6 +55,16 @@ public class UITableViewSection: NSObject {
     /// Return row at index
     public func row(at index: Int) -> UITableViewRow? {
         return self.rows.element(at: index)
+    }
+    
+    /// Return first row with unique id
+    public func row(id: String) -> UITableViewRow? {
+        return self.rows(id: id).first
+    }
+    
+    /// Return rows with unique id
+    public func rows(id: String) -> [UITableViewRow] {
+        return self.rows.filter { $0.id == id }
     }
     
     /// Set the header title using a closure that will be called when the table view titleForHeaderAtIndex

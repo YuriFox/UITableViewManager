@@ -1,0 +1,11 @@
+// Remove add row/section
+// Add sections { set get } after need reload data
+// Add setSections(_:) -> Reload data
+// Add insertRows(in section) -> updates insert
+// Add deleteRows(in section) -> updates delete
+// Add reloadRows(in section) -> updates reload
+// Add moveRows(in section) -> updates move
+
+// TODO:
+// 1. UpdateSection(_ section: UITableViewSection, updateBlock: (UITableViewSection.Builder) -> Void)
+// 2. UITableViewSection.Builder has tableView, insert, delete, reload

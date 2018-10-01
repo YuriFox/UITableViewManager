@@ -10,6 +10,9 @@ import class UIKit.UITableView
 
 public class UITableViewRow: NSObject {
 
+    /// Unique row identificator 
+    public var id: String?
+    
     /// Preferred height of this row
     public var height: CGFloat = 44
     
@@ -64,7 +67,7 @@ extension UITableViewRow {
         }
     }
     
-    public static func loading(style: UIActivityIndicatorViewStyle = .gray) -> UITableViewRow {
+    public static func loading(style: UIActivityIndicatorView.Style = .gray) -> UITableViewRow {
         let row = UITableViewRow { (tableView, indexPath) -> UITableViewCell in
             let cell = UITableViewLoadingCell(style: style)
             cell.backgroundColor = tableView.backgroundColor

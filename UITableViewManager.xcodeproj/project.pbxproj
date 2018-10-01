@@ -14,8 +14,10 @@
 		DA155B5220FE5D0D00694C47 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */; };
 		DA155B5320FE5D0D00694C47 /* UITableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */; };
 		DA3C392D213A575500D357A3 /* UITableViewInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3C392C213A575500D357A3 /* UITableViewInfoCell.swift */; };
+		DA45123F2154E5320086F3DB /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = DA45123E2154E5320086F3DB /* TODO */; };
 		DA87181A21395E8F006E858A /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA87181921395E8F006E858A /* Array+Extension.swift */; };
 		DA87181D2139C1FB006E858A /* CHANGELOG in Resources */ = {isa = PBXBuildFile; fileRef = DA87181C2139C1FB006E858A /* CHANGELOG */; };
+		DAF45AC5216285AD0076BD7D /* UITableViewManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = DAF45AC4216285AD0076BD7D /* UITableViewManager.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +30,10 @@
 		DA155B4E20FE5D0C00694C47 /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewSection.swift; sourceTree = "<group>"; };
 		DA3C392C213A575500D357A3 /* UITableViewInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewInfoCell.swift; sourceTree = "<group>"; };
+		DA45123E2154E5320086F3DB /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		DA87181921395E8F006E858A /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		DA87181C2139C1FB006E858A /* CHANGELOG */ = {isa = PBXFileReference; lastKnownFileType = text; path = CHANGELOG; sourceTree = "<group>"; };
+		DAF45AC4216285AD0076BD7D /* UITableViewManager.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = UITableViewManager.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +50,7 @@
 		DA155B3720FE5CD700694C47 = {
 			isa = PBXGroup;
 			children = (
+				DAF45AC4216285AD0076BD7D /* UITableViewManager.podspec */,
 				DA155B4320FE5CD700694C47 /* UITableViewManager */,
 				DA155B4220FE5CD700694C47 /* Products */,
 			);
@@ -63,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				DA87181C2139C1FB006E858A /* CHANGELOG */,
+				DA45123E2154E5320086F3DB /* TODO */,
 				DA155B4420FE5CD700694C47 /* UITableViewManager.h */,
 				DA155B4D20FE5D0C00694C47 /* UITableViewManager.swift */,
 				DA155B4F20FE5D0C00694C47 /* UITableViewSection.swift */,
@@ -145,6 +151,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA45123F2154E5320086F3DB /* TODO in Resources */,
+				DAF45AC5216285AD0076BD7D /* UITableViewManager.podspec in Resources */,
 				DA87181D2139C1FB006E858A /* CHANGELOG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,7 +320,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -339,7 +347,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Developer.Lysytsia.UITableViewManager;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
